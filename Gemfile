@@ -20,7 +20,7 @@ gem 'faker', '1.7.3'
 # devise to manage user login and signup
 gem 'devise'
 # omniauth-facebook to login with facebook account
-gem 'omniauth-facebook'
+gem 'omniauth-facebook', '~> 3.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
