@@ -47,6 +47,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'guard', '~> 2.16', '>= 2.16.1'
   # gem letter_opener to manage mailer in development
   gem 'letter_opener'
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
