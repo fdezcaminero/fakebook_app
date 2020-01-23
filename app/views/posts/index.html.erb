@@ -20,7 +20,16 @@
         <td><%= link_to 'Show', post %></td>
         <td><%= link_to 'Edit', edit_post_path(post) %></td>
         <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <td><%= 'Like' %></td>
+        <td>
+          <span >
+            <% pre_like = post.liked_posts.find { |liked_post| liked_post.user_id == current_user.id} %>
+            <% if pre_like %>
+              <%= link_to 'Dislike', post_liked_post_path(post_id: post.id), method: :delete %>
+            <% else %>
+              <%= link_to 'Like', post_liked_post_path, method: :post %>
+            <% end %>
+          </span>
+        </td>
       </tr>
     <% end %>
   </tbody>

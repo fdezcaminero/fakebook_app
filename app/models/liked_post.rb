@@ -2,5 +2,5 @@ class LikedPost < ApplicationRecord
   belongs_to :user
   belongs_to :post
 
-  validates :user, uniqueness: { scope: %I[user_id post_id] }
+  validates :user_id, uniqueness: { scope: %i[user_id post_id] }
 end
