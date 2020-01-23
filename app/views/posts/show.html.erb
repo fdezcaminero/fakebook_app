@@ -15,11 +15,15 @@
   <%= @post.user.username %>
 </p>
 
+<%= render @post.comments %>
+
+<%= render 'comment_form' %>
+
 <% if @post.liked_posts.count > 0 %>
-  <table> Users liked this content
+  <table>
     <thead>
       <tr>
-        <th>User</th>
+        <th>Likes</th>
         <th colspan="1"></th>
       </tr>
     </thead>
