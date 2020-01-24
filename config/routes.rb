@@ -5,7 +5,9 @@ Rails.application.routes.draw do
       resources :like_comments, only: %i[create destroy]
     end
   end
-  resources :users, only: %I[index show]
+  resources :users, only: %I[index show] do
+    resources :friendship
+  end
   # get 'users/index'
   root to: 'users#index'
   devise_for :users, path_prefix: 'auth'

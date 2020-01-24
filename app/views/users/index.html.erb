@@ -6,7 +6,7 @@
     <tr>
       <th>Username</th>
       <th>Email</th>
-      <th colspan="1"></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
@@ -15,7 +15,14 @@
       <tr>
         <td><%= user.username %></td>
         <td><%= user.email %></td>
-        <td><%= link_to 'Show', user %></td>
+        <% friend_link = current_user.friend?(user) ? 'Remove friend' : 'Add friend' %>
+        <% unless current_user == user %>
+          <% if current_user.friend?(user) %>
+            <td><%= link_to 'Remove friend', user_friendship_destroy_path(user.id), method: :delete %></td>
+          <% else %>
+            <td><%= link_to 'Add friend', user_friendship_create_path(user.id), method: :post %></td>
+          <% end %>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
