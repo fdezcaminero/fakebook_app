@@ -1,12 +1,11 @@
 class PostsController < ApplicationController
-  before_action :set_post, only: %I[show edit update destroy]
+  before_action :find_post, only: %I[show edit update destroy]
   before_action :authenticate_user!
 
   # GET /posts
   # GET /posts.json
   def index
     @posts = Post.all
-    @liked_posts = LikedPost.all
   end
 
   # GET /posts/1
@@ -66,7 +65,7 @@ class PostsController < ApplicationController
   private
 
   # Use callbacks to share common setup or constraints between actions.
-  def set_post
+  def find_post
     @post = Post.find(params[:id])
   end
 
