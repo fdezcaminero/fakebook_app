@@ -39,4 +39,9 @@ class User < ApplicationRecord
   def friend?(user)
     friends.include?(user)
   end
+
+  def remove_friendship(friend_id)
+    friendships.find_by_friend_id(friend_id)&.destroy ||
+    inverse_friendships.find_by_user_id(friend_id)&.destroy
+  end
 end
