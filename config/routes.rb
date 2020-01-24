@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :posts do
     resources :like_posts, only: %i[create destroy]
-    resources :comments
+    resources :comments, only: %i[create]
   end
   resources :users, only: %I[index show]
   # get 'users/index'
