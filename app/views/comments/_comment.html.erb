@@ -1,45 +1,47 @@
-<table>
-  <thead>
-    <tr>
-      <th>Commented by</th>
-      <th>Comment</th>
-      <th colspan="1"></th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr>
-        <td><%= comment.user.username %></td>
-        <td><%= comment.content %></td>
-        <td>
-          <span >
-            <% pre_like = comment.like_comments.find { |liked_comment| liked_comment.user_id == current_user.id} %>
-            <% if pre_like %>
-              <%= link_to 'Dislike', post_comment_like_comment_path(id: current_user.id, comment_id: comment.id, post_id: comment.post.id), method: :delete %>
-            <% else %>
-              <%= link_to 'Like', post_comment_like_comments_path(id: current_user.id, comment_id: comment.id, post_id: comment.post.id), method: :post %>
-            <% end %>
-          </span>
-        </td>
-      </tr>
-  </tbody>
-</table>
-
-<% if comment.like_comments.count > 0 %>
+<% @post.comments.each do |comment| %>
   <table>
     <thead>
       <tr>
-        <th>Likes <%= comment.like_comments.count %></th>
+        <th>Commented by</th>
+        <th>Comment</th>
         <th colspan="1"></th>
       </tr>
     </thead>
     <tbody>
-      <% comment.like_comments.each do | ul | %>
         <tr>
-          <td>Liked by</td>
-          <td><%= ul.user.username %></td>
-          <td><%= link_to 'Show', ul.user %></td>
+          <td><%= comment.user.username %></td>
+          <td><%= comment.content %></td>
+          <td>
+            <span >
+              <% pre_like = comment.like_comments.find { |liked_comment| liked_comment.user_id == current_user.id} %>
+              <% if pre_like %>
+                <%= link_to 'Dislike', post_comment_like_comment_path(id: current_user.id, comment_id: comment.id, post_id: comment.post.id), method: :delete %>
+              <% else %>
+                <%= link_to 'Like', post_comment_like_comments_path(id: current_user.id, comment_id: comment.id, post_id: comment.post.id), method: :post %>
+              <% end %>
+            </span>
+          </td>
         </tr>
-      <% end %>
     </tbody>
   </table>
+
+  <% if comment.like_comments.count > 0 %>
+    <table>
+      <thead>
+        <tr>
+          <th>Likes <%= comment.like_comments.count %></th>
+          <th colspan="1"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% comment.like_comments.each do | ul | %>
+          <tr>
+            <td>Liked by</td>
+            <td><%= ul.user.username %></td>
+            <td><%= link_to 'Show', ul.user %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
 <% end %>
