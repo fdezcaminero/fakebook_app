@@ -9,7 +9,7 @@ Rails.application.routes.draw do
     end
   end
   resources :users, only: %I[index show] do
-    resources :friendship, only: %i[create update]
+    resources :friendship, only: %i[create destroy]
   end
   # get 'users/index'
 end

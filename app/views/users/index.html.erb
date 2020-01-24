@@ -11,23 +11,35 @@
   </thead>
 
   <tbody>
-    <% @users.each do |user| %>
+    <% current_user.pending_friends.each do |user| %>
       <tr>
         <td><%= user.username %></td>
         <td><%= user.email %></td>
-        <% friend_link = current_user.friend?(user) ? 'Remove friend' : 'Add friend' %>
-        <% unless current_user == user %>
-          <% if current_user.friend?(user) %>
-            <td><%= link_to 'Remove friend', user_friendship_path(user.id, current_user.id), method: :delete %></td>
-          <% else %>
-            <td><%= link_to 'Add friend', user_friendship_path(user.id, current_user.id), method: :post %></td>
-          <% end %>
-        <% end %>
+        <td>pending approval</td>
+      </tr>
+    <% end %>
+    <% current_user.friend_requests.each do |user| %>
+      <tr>
+        <td><%= user.username %></td>
+        <td><%= user.email %></td>
+        <td>Approve request</td>
+      </tr>
+    <% end %>
+    <% current_user.friends.each do |user| %>
+      <tr>
+        <td><%= user.username %></td>
+        <td><%= user.email %></td>
+        <td><%= link_to 'Remove friend', user_friendship_path(user.id, current_user.id), method: :delete %></td>
+      </tr>
+    <% end %>
+    <% current_user.no_relation.each do |user| %>
+      <tr>
+        <td><%= user.username %></td>
+        <td><%= user.email %></td>
+        <td><%= link_to 'Add friend', user_friendship_index_path(user.id, current_user.id), method: :post %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
 
 <%= link_to 'New Post', new_post_path %>

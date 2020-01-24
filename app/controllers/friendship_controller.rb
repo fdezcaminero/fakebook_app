@@ -2,12 +2,16 @@ class FriendshipController < ApplicationController
   before_action :authenticate_user!
 
   def create
-    following = current_user.friendships.build(friendship_params)
-    if following.save
+    @following = current_user.friendships.build(friend_id: params[:user_id])
+    if @following.save
       redirect_to root_path
     else
       flash[:alert] = "Couldn't be friend #{friendship_params[:user_id]}"
     end
+  end
+
+  def update
+
   end
 
   def destroy
