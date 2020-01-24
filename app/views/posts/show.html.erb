@@ -4,6 +4,26 @@
   <%= @post.content %>
 </p>
 
+<% if @post.liked_posts.count > 0 %>
+  <table>
+    <thead>
+      <tr>
+        <th>Likes <%= @post.liked_posts.count %></th>
+        <th colspan="1"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @post.liked_posts.each do | ul | %>
+        <tr>
+          <td>Liked by</td>
+          <td><%= ul.user.username %></td>
+          <td><%= link_to 'Show', ul.user %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
 <p>
   <strong>Email:</strong>
   <%= @post.user.email %>
@@ -19,24 +39,6 @@
 
 <%= render 'comment_form' %>
 
-<% if @post.liked_posts.count > 0 %>
-  <table>
-    <thead>
-      <tr>
-        <th>Likes</th>
-        <th colspan="1"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @post.liked_posts.each do | ul | %>
-        <tr>
-          <td><%= ul.user.username %></td>
-          <td><%= link_to 'Show', ul.user %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% end %>
 
 <%= link_to 'Edit', edit_post_path(@post) %> |
 <%= link_to 'Back', posts_path %>

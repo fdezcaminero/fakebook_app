@@ -1,6 +1,18 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
 
+  # GET /posts
+  # GET /posts.json
+  def index
+    @comments = Comment.all
+  end
+
+  # GET /posts/1
+  # GET /posts/1.json
+  def show
+    @comment = Comment.find(params[:id])
+  end
+
   def new
     @comment = Comment.new
   end
