@@ -3,8 +3,12 @@ class User < ApplicationRecord
   has_many :liked_posts, dependent: :destroy
   has_many :like_comments, dependent: :destroy
   has_many :comments
-  has_many :friendships
-  has_many :inverse_friendships, class_name: 'Friendship', foreign_key: 'friend_id'
+
+  friendship_scope = -> { includes(:requester, :requestee).order('users.username') }
+  has_many :following_friendships, friendship_scope, foreign_key: 'requester_id', class_name: :Friendship
+  has_many :followers_friendships, friendship_scope, foreign_key: 'requestee_id', class_name: :Friendship
+
+  default_scope { order(:username) }
 
   validates :username, presence: true, length: { maximum: 50, minimum: 3 }
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
@@ -14,46 +18,34 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  def friends
-    friends_array = friendships.map { |friendship| friendship.friend if friendship.confirmed }
-    friends_array += inverse_friendships.map { |friendship| friendship.user if friendship.confirmed }
-    friends_array.compact
+  # Requests made by others to current_user
+  def active_followers
+   followers_friendships.where(status: :accepted).map(&:requester)
   end
 
-  # Users who have yet to confirme friend requests
-  def pending_friends
-    friendships.map { |friendship| friendship.friend if friendship.confirmed.nil? }.compact
+  def pending_followers
+   followers_friendships.where(status: :pending).map(&:requester)
   end
 
-  # Users who have requested to be friends
-  def friend_requests
-    inverse_friendships.map { |friendship| friendship.user if friendship.confirmed.nil? }.compact
+  # Requests made by current_user to others
+  def pending_following
+   following_friendships.where(status: :pending).map(&:requestee)
   end
 
-  # friend request that where rejected
-  def rejected_friends
-    friendships.map { |friendship| friendship.friend if friendship.confirmed == false }.compact
+  def active_following
+   following_friendships.where(status: :accepted).map(&:requestee)
   end
 
-  def no_relation
-    User.all - (self.pending_friends + self.friend_requests)
+  def rejected_followings
+   following_friendships.where(status: :rejected).map(&:requestee)
   end
 
-  def confirm_friend(user)
-    friendship = inverse_friendships.find { |f| f.user == user }
-    friendship.confirmed = true
-    friendship.save
+  def rejected_followers
+   followers_friendships.where(status: :rejected).map(&:requester)
   end
-
-  def friend?(user)
-    friends.include?(user)
-  end
-
-  # def pending_request(user)
-  #
-  # end
 
   def remove_friendship(friend_id)
-    friendships.find_by_friend_id(friend_id)&.destroy || inverse_friendships.find_by_user_id(friend_id)&.destroy
+   following_friendships.find_by_requestee_id(friend_id)&.destroy ||
+   followers_friendships.find_by_requester_id(friend_id)&.destroy
   end
 end

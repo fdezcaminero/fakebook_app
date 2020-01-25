@@ -1,6 +1,4 @@
 class CommentsController < ApplicationController
-  before_action :authenticate_user!
-
   # GET /posts
   # GET /posts.json
   def index

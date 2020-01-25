@@ -8,8 +8,10 @@ Rails.application.routes.draw do
       resources :like_comments, only: %i[create destroy]
     end
   end
-  resources :users, only: %I[index show] do
-    resources :friendship, only: %i[create destroy update]
-  end
+  resources :users, only: %I[index show]
+  get 'friendships/create'
+  get 'friendships/destroy'
+  get 'friendships/update'
+  # resources :friendships, only: %i[create destroy update]
   # get 'users/index'
 end
