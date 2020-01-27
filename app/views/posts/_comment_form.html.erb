@@ -1,0 +1,7 @@
+<%= form_for([@post, @post.comments.build]) do |p| %>
+  <%#= render 'shared/error_messages', object: p.object %>
+  <%= p.label :content %>
+  <%= p.text_area :content, class: "form-control" %>
+  <%= p.hidden_field :post_id %>
+  <%= p.submit 'Submit', class: "btn btn-primary" %>
+<% end %>
