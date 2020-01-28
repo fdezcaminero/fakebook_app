@@ -12,8 +12,16 @@ class FriendshipsController < ApplicationController
 
   def update
     request = current_user.followers_friendships.find_by(requester_id: params[:requester_id])
-    flash[:alert] = "Couldn't accept request." unless request.update(status: params[:status])
-    redirect_to users_path
+    if request.update(status: params[:status])
+      requester =  User.find(current_user.id)
+      requestee =  current_user.followers_friendships.find_by(requester_id: params[:requester_id]))
+      Friendship.create(requester_id: requestee.id, requestee_id: requester.id, status: true)
+      flash[:notice] = 'Friend confirmed'
+      redirect_to users_path
+    else
+      flash[:alert] = 'Something went wrong'
+      redirect_to users_path
+    end
   end
 
   private
