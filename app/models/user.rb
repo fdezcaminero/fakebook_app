@@ -8,8 +8,6 @@ class User < ApplicationRecord
   has_many :following_friendships, friendship_scope, foreign_key: 'requester_id', class_name: :Friendship
   has_many :followers_friendships, friendship_scope, foreign_key: 'requestee_id', class_name: :Friendship
 
-  default_scope { order(:username) }
-
   validates :username, presence: true, length: { maximum: 50, minimum: 3 }
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
