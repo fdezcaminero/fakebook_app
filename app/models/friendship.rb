@@ -1,13 +1,12 @@
 class Friendship < ApplicationRecord
   enum status: %i[pending accepted rejected]
+  belongs_to :requester, class_name: :User
+  belongs_to :requestee, class_name: :User
+
   validates :requester, presence: true
   validates :requestee, presence: true
   validate :disallow_self_friendship
   validate :duplicate_check
-
-  # before_save :insert_friendship
-  belongs_to :requester, class_name: :User
-  belongs_to :requestee, class_name: :User
 
   private
 
