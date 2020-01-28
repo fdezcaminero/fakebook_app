@@ -6,22 +6,24 @@ class FriendshipsController < ApplicationController
   end
 
   def destroy
-    current_user.remove_friendship params[:requestee_id]
+    requester = current_user
+    requestee = User.find(params[:requestee_id])
+    current_user.remove_friendship(requestee.id)
+    requestee.remove_friendship(requester.id)
     redirect_to users_path
   end
 
   def update
-    request = current_user.followers_friendships.find_by(requester_id: params[:requester_id])
+    requester = User.find(params[:requester_id])
+    requestee = current_user
+    request = current_user.followers_friendships.find_by(requester: requester)
     if request.update(status: params[:status])
-      requester =  User.find(current_user.id)
-      requestee =  current_user.followers_friendships.find_by(requester_id: params[:requester_id]))
-      Friendship.create(requester_id: requestee.id, requestee_id: requester.id, status: true)
+      Friendship.create(requester: requestee, requestee: requester, status: 1)
       flash[:notice] = 'Friend confirmed'
-      redirect_to users_path
     else
       flash[:alert] = 'Something went wrong'
-      redirect_to users_path
     end
+    redirect_to users_path
   end
 
   private

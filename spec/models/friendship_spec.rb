@@ -11,10 +11,6 @@ RSpec.describe Friendship, type: :model do
                 password: 'foobar', password_confirmation: 'foobar')
   end
 
-  let(:friendship) do
-    Friendship.new
-  end
-
   subject do
     user1.following_friendships.new(requestee: user2)
   end
@@ -31,5 +27,10 @@ RSpec.describe Friendship, type: :model do
   it 'must have a valid requestee' do
     subject.requestee = nil
     expect(subject).to_not be_valid
+  end
+
+  it 'disallow self friendship' do
+    same_user = Friendship.create(requestee: user1, requester: user1)
+    expect(same_user).to_not be_valid
   end
 end
