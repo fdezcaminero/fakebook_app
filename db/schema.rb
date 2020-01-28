@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 2020_01_25_061318) do
     t.index ["relation"], name: "index_friendships_on_relation", unique: true
     t.index ["requestee_id"], name: "index_friendships_on_requestee_id"
     t.index ["requestee_id"], name: "requestee_id_index"
+    t.index ["requester_id", "requestee_id"], name: "index_friendships_on_requester_id_and_requestee_id", unique: true
     t.index ["requester_id"], name: "index_friendships_on_requester_id"
     t.index ["requester_id"], name: "requester_id_index"
   end

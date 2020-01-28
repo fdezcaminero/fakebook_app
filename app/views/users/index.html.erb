@@ -18,7 +18,6 @@
         <%= link_to 'Reject', friendships_update_path(requester_id: pending_follower.id, status: :rejected), class: 'option-button' %>
       </div>
     </div>
-
   <% end %>
   <%= content_tag :h2, 'Following' if (following + followers).any? %>
   <% (following + followers).sort_by(&:username).each do |user| %>
@@ -52,5 +51,3 @@
     </div>
   <% end %>
 </main>
-
-<%= link_to 'New Post', new_post_path %>

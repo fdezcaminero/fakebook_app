@@ -1,6 +1,6 @@
 <h1 class="name fakebook">
   <% if (link |= false) %>
-    <%= link_to user.username, user_path(user.username) %>
+    <%= link_to user.username, user_path(user) %>
   <% else %>
     <%= user.username %>
   <% end %>

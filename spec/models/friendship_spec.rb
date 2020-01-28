@@ -1,5 +1,35 @@
 require 'rails_helper'
 
 RSpec.describe Friendship, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:user1) do
+    User.create(username: 'Foo Bar', email: 'foobar@foo.bar',
+                password: 'foobar', password_confirmation: 'foobar')
+  end
+
+  let(:user2) do
+    User.create(username: 'Bar Foo', email: 'barfoo@foo.bar',
+                password: 'foobar', password_confirmation: 'foobar')
+  end
+
+  let(:friendship) do
+    Friendship.new
+  end
+
+  subject do
+    user1.following_friendships.new(requestee: user2)
+  end
+
+  it 'must have valid users' do
+    expect(subject).to be_valid
+  end
+
+  it 'must have a valid requester' do
+    subject.requester = nil
+    expect(subject).to_not be_valid
+  end
+
+  it 'must have a valid requestee' do
+    subject.requestee = nil
+    expect(subject).to_not be_valid
+  end
 end
