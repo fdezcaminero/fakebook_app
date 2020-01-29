@@ -11,11 +11,11 @@ class Friendship < ApplicationRecord
   private
 
   def inject_friendship
-    if requester_id > requestee_id
-      self.relation = "#{requestee_id}|#{requester_id}"
-    else
-      self.relation = "#{requester_id}|#{requestee_id}"
-    end
+    self.relation = if requester_id > requestee_id
+                      "#{requestee_id}|#{requester_id}"
+                    else
+                      "#{requester_id}|#{requestee_id}"
+                    end
   end
 
   def self_friendship_check
