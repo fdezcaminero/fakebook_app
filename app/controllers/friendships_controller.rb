@@ -18,9 +18,21 @@ class FriendshipsController < ApplicationController
   def update
     requester = User.find(params[:requester_id])
     request = current_user.followers_friendships.find_by(requester: requester)
-    if request.update(status: params[:status])
-      Friendship.create(requester: current_user, requestee: requester, status: params[:status])
+    if request.update(status: 1)
+      Friendship.create(requester: current_user, requestee: requester, status: 1)
       flash[:notice] = 'Friend confirmed'
+    else
+      flash[:alert] = 'Something went wrong'
+    end
+    redirect_to users_path
+  end
+
+  def edit
+    requester = User.find(params[:requester_id])
+    request = current_user.followers_friendships.find_by(requester: requester)
+    if request.update(status: 2)
+      Friendship.create(requester: current_user, requestee: requester, status: 2)
+      flash[:notice] = 'Request rejected!'
     else
       flash[:alert] = 'Something went wrong'
     end

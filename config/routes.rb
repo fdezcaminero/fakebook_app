@@ -11,7 +11,8 @@ Rails.application.routes.draw do
   resources :users, only: %I[index show]
   get 'friendships/create'
   get 'friendships/destroy'
-  get 'friendships/update'
+  get 'friendships/update' => 'friendships#update', status: :accepted
+  get 'friendships/edit' => 'friendships#edit', status: :reject
   # resources :friendships, only: %i[create destroy update]
   # get 'users/index'
 end
