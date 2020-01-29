@@ -12,7 +12,7 @@ RSpec.describe Friendship, type: :model do
   end
 
   subject do
-    user1.following_friendships.new(requestee: user2)
+    user1.following_friends.new(requestee: user2)
   end
 
   it 'must have valid users' do

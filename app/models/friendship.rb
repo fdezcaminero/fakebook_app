@@ -5,20 +5,24 @@ class Friendship < ApplicationRecord
 
   validates :requester, presence: true
   validates :requestee, presence: true
-  validate :disallow_self_friendship
-  validate :duplicate_check
+  validate :self_friendship_check
+  validate :duplicate_friendship_check
 
   private
 
-  def insert_friendship
-    self.relation = requester_id > requestee_id ? "#{requestee_id}|#{requester_id}" : "#{requester_id}|#{requestee_id}"
+  def inject_friendship
+    if requester_id > requestee_id
+      self.relation = "#{requestee_id}|#{requester_id}"
+    else
+      self.relation = "#{requester_id}|#{requestee_id}"
+    end
   end
 
-  def disallow_self_friendship
+  def self_friendship_check
     errors.add(:requestee_id, 'Cant friend yourself') if requester_id == requestee_id
   end
 
-  def duplicate_check
+  def duplicate_friendship_check
     friendship_requester = Friendship.where(requester_id: requestee_id, requestee_id: requester_id).exists?
     friendship_requestee = Friendship.where(requester_id: requester_id, requestee_id: requestee_id).exists?
     errors.add(:requester_id, 'Already friends!') if friendship_requester && friendship_requestee
