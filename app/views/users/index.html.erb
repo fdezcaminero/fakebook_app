@@ -4,11 +4,8 @@
 <% end %>
 
 <main class="users-container">
-  <% following = current_user.active_following %>
-  <% followers = current_user.active_followers %>
-  <% pending_followers = current_user.pending_followers %>
   <%= content_tag :h2, 'Pending requests' if current_user.pending_followers.any? %>
-  <% pending_followers.each do |pending_follower| %>
+  <% @pending_followers.each do |pending_follower| %>
     <div class="user-profile">
       <div class="profile">
         <%= render 'users/partials/user_profile', user: pending_follower, link: true %>
@@ -19,8 +16,8 @@
       </div>
     </div>
   <% end %>
-  <%= content_tag :h2, 'Following' if (following).any? %>
-  <% following.sort_by(&:username).each do |user| %>
+  <%= content_tag :h2, 'Following' if (@following).any? %>
+  <% @following.sort_by(&:username).each do |user| %>
     <div class="user-profile">
       <div class="profile">
         <%= render 'users/partials/user_profile', user: user, link: true %>
@@ -30,9 +27,8 @@
       </div>
     </div>
   <% end %>
-  <% all_users =  (@users - following - followers - pending_followers - [current_user]).sort_by(&:username) %>
-  <%= content_tag :h2, 'All users' if all_users.any? %>
-  <% all_users.each do |user| %>
+  <%= content_tag :h2, 'All users' if @all_users.any? %>
+  <% @all_users.each do |user| %>
     <div class="user-profile">
       <div class="profile">
         <%= render 'users/partials/user_profile', user: user, link: true %>
