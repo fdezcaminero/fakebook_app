@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_25_061318) do
+ActiveRecord::Schema.define(version: 2020_01_30_161406) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,11 +31,8 @@ ActiveRecord::Schema.define(version: 2020_01_25_061318) do
     t.bigint "requestee_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "relation"
-    t.index ["relation"], name: "index_friendships_on_relation", unique: true
     t.index ["requestee_id"], name: "index_friendships_on_requestee_id"
     t.index ["requestee_id"], name: "requestee_id_index"
-    t.index ["requester_id", "requestee_id"], name: "index_friendships_on_requester_id_and_requestee_id", unique: true
     t.index ["requester_id"], name: "index_friendships_on_requester_id"
     t.index ["requester_id"], name: "requester_id_index"
   end
@@ -75,6 +72,10 @@ ActiveRecord::Schema.define(version: 2020_01_25_061318) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "username"
+    t.string "provider"
+    t.string "uid"
+    t.string "name"
+    t.text "image"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

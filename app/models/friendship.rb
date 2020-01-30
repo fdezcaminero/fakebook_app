@@ -10,10 +10,6 @@ class Friendship < ApplicationRecord
 
   private
 
-  def insert_friendship
-    self.relation = requester_id > requestee_id ? "#{requestee_id}|#{requester_id}" : "#{requester_id}|#{requestee_id}"
-  end
-
   def disallow_self_friendship
     errors.add(:requestee_id, 'Cant friend yourself') if requester_id == requestee_id
   end
