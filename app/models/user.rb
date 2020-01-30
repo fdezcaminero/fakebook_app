@@ -53,8 +53,7 @@ class User < ApplicationRecord
   end
 
   def friends_and_own_posts
-    posts = Post.where(user: (self.feed)) + Post.where(user: (self.id))
-    posts = posts.sort_by &:updated_at
+    (Post.where(user: feed) + Post.where(user: id)).sort_by(&:updated_at)
     # This will produce SQL query with IN. Something like: select * from posts where user_id IN (1,45,874,43);
   end
 end

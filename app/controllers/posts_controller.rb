@@ -5,7 +5,6 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    followers = current_user.feed
     @posts = current_user.friends_and_own_posts
   end
 
