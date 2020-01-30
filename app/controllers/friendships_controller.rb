@@ -3,7 +3,7 @@ class FriendshipsController < ApplicationController
   before_action :correct_user, only: %i[update destroy]
 
   def create
-    following = current_user.following_friendships.new(friendship_params)
+    following = current_user.following_friends.new(friendship_params)
     flash[:alert] = "Couldn't befriend #{friendship_params[:requestee_id]}" unless following.save
     redirect_to users_path
   end
@@ -17,10 +17,22 @@ class FriendshipsController < ApplicationController
 
   def update
     requester = User.find(params[:requester_id])
-    request = current_user.followers_friendships.find_by(requester: requester)
-    if request.update(status: params[:status])
-      Friendship.create(requester: current_user, requestee: requester, status: params[:status])
+    request = current_user.followers_friends.find_by(requester: requester)
+    if request.update(status: 1)
+      Friendship.create(requester: current_user, requestee: requester, status: 1)
       flash[:notice] = 'Friend confirmed'
+    else
+      flash[:alert] = 'Something went wrong'
+    end
+    redirect_to users_path
+  end
+
+  def edit
+    requester = User.find(params[:requester_id])
+    request = current_user.followers_friends.find_by(requester: requester)
+    if request.update(status: 2)
+      Friendship.create(requester: current_user, requestee: requester, status: 2)
+      flash[:notice] = 'Request rejected!'
     else
       flash[:alert] = 'Something went wrong'
     end
