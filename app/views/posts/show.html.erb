@@ -16,7 +16,7 @@
       <% @post.liked_posts.each do | ul | %>
         <tr>
           <td>Liked by</td>
-          <td><%= ul.user.username %></td>
+          <td><%= ul.user.email %></td>
           <td><%= link_to 'Show', ul.user %></td>
         </tr>
       <% end %>
@@ -27,12 +27,6 @@
 <p>
   <strong>Email:</strong>
   <%= @post.user.email %>
-</p>
-
-
-<p>
-  <strong>User:</strong>
-  <%= @post.user.username %>
 </p>
 
 <%= render 'comments/comment' %>

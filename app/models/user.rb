@@ -4,11 +4,10 @@ class User < ApplicationRecord
   has_many :like_comments, dependent: :destroy
   has_many :comments
 
-  friendship_scope = -> { includes(:requester, :requestee).order('users.username') }
+  friendship_scope = -> { includes(:requester, :requestee).order('users.id') }
   has_many :following_friendships, friendship_scope, foreign_key: 'requester_id', class_name: :Friendship
   has_many :followers_friendships, friendship_scope, foreign_key: 'requestee_id', class_name: :Friendship
 
-  validates :username, presence: true, length: { maximum: 50, minimum: 3 }
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
@@ -67,7 +66,6 @@ class User < ApplicationRecord
 
   def self.find_or_create_by_omniauth(auth_hash)
     where(email: auth_hash['info']['email']).first_or_create do |u|
-      u.name = auth_hash['info']['name']
       u.password = SecureRandom.hex
     end
   end

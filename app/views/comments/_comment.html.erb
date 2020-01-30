@@ -9,7 +9,7 @@
     </thead>
     <tbody>
         <tr>
-          <td><%= comment.user.username %></td>
+          <td><%= comment.user.email %></td>
           <td><%= comment.content %></td>
           <td>
             <span >
@@ -37,7 +37,7 @@
         <% comment.like_comments.each do | ul | %>
           <tr>
             <td>Liked by</td>
-            <td><%= ul.user.username %></td>
+            <td><%= ul.user.email %></td>
             <td><%= link_to 'Show', ul.user %></td>
           </tr>
         <% end %>
