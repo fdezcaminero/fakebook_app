@@ -46,4 +46,15 @@ class User < ApplicationRecord
   def feed
     followers_friends.where(status: :accepted).map(&:requester_id)
   end
+
+  def remove_friendship(friend_id)
+    following_friends.find_by_requestee_id(friend_id)&.destroy ||
+      followers_friends.find_by_requester_id(friend_id)&.destroy
+  end
+
+  def friends_and_own_posts
+    posts = Post.where(user: (self.feed)) + Post.where(user: (self.id))
+    posts = posts.sort_by &:updated_at
+    # This will produce SQL query with IN. Something like: select * from posts where user_id IN (1,45,874,43);
+  end
 end
