@@ -5,10 +5,8 @@ class User < ApplicationRecord
   has_many :comments
 
   friendship_scope = -> { includes(:requester, :requestee).order('users.username') }
-  has_many :following_friendships, friendship_scope, foreign_key: 'requester_id', class_name: :Friendship
-  has_many :followers_friendships, friendship_scope, foreign_key: 'requestee_id', class_name: :Friendship
-
-  default_scope { order(:username) }
+  has_many :following_friends, friendship_scope, foreign_key: 'requester_id', class_name: :Friendship
+  has_many :followers_friends, friendship_scope, foreign_key: 'requestee_id', class_name: :Friendship
 
   validates :username, presence: true, length: { maximum: 50, minimum: 3 }
   validates :email, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
@@ -21,32 +19,41 @@ class User < ApplicationRecord
 
   # Requests made by others to current_user
   def active_followers
-    followers_friendships.where(status: :accepted).map(&:requester)
+    followers_friends.where(status: :accepted).map(&:requester)
   end
 
   def pending_followers
-    followers_friendships.where(status: :pending).map(&:requester)
+    followers_friends.where(status: :pending).map(&:requester)
   end
 
   # Requests made by current_user to others
   def pending_following
-    following_friendships.where(status: :pending).map(&:requestee)
+    following_friends.where(status: :pending).map(&:requestee)
   end
 
   def active_following
-    following_friendships.where(status: :accepted).map(&:requestee)
+    following_friends.where(status: :accepted).map(&:requestee)
   end
 
   def rejected_followings
-    following_friendships.where(status: :rejected).map(&:requestee)
+    following_friends.where(status: :rejected).map(&:requestee)
   end
 
   def rejected_followers
-    followers_friendships.where(status: :rejected).map(&:requester)
+    followers_friends.where(status: :rejected).map(&:requester)
+  end
+
+  def feed
+    followers_friends.where(status: :accepted).map(&:requester_id)
   end
 
   def remove_friendship(friend_id)
-    following_friendships.find_by_requestee_id(friend_id)&.destroy ||
-      followers_friendships.find_by_requester_id(friend_id)&.destroy
+    following_friends.find_by_requestee_id(friend_id)&.destroy ||
+      followers_friends.find_by_requester_id(friend_id)&.destroy
+  end
+
+  def friends_and_own_posts
+    (Post.where(user: feed) + Post.where(user: id)).sort_by(&:updated_at)
+    # This will produce SQL query with IN. Something like: select * from posts where user_id IN (1,45,874,43);
   end
 end
