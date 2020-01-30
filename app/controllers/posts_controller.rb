@@ -5,10 +5,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    followers = current_user.followers_friendships.map(&:requester_id)
-    @posts = Post.all.select do |post|
-      followers.include?(post.user.id) || post.user.id == current_user.id
-    end
+    @posts = current_user.friends_and_own_posts
   end
 
   # GET /posts/1
