@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root to: 'users#index'
-  devise_for :users, path_prefix: 'auth'
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
 
   resources :posts do
     resources :like_posts, only: %i[create destroy]

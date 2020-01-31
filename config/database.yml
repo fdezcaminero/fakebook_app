@@ -23,5 +23,11 @@ test:
   database: fakebook_app_test
 
 production:
-  <<: *default
-  database: fakebook_app
+  adapter: postgresql
+  encoding: unicode
+  database: <%= ENV['NAME_DB'] %>
+  port: 5432
+  host: <%= ENV['PORT_DB'] %>
+  username: <%= ENV['USER_DB'] %>
+  password: <%= ENV['PSWD_DB'] %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>

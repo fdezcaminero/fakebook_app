@@ -17,7 +17,7 @@
     </div>
   <% end %>
   <%= content_tag :h2, 'Following' if (@following).any? %>
-  <% @following.sort_by(&:username).each do |user| %>
+  <% @following.sort_by(&:id).each do |user| %>
     <div class="user-profile">
       <div class="profile">
         <%= render 'users/partials/user_profile', user: user, link: true %>
