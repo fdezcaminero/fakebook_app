@@ -23,6 +23,7 @@ end
 users = User.all
 10.times do
   users.each do |user|
-    user.posts.create(content: Faker::Lorem.sentence(15))
+    content = Faker::Lorem.sentence(15)
+    user.posts.create(content: content)
   end
 end
