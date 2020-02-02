@@ -1,0 +1,7 @@
+<h1 class="name fakebook">
+  <% if (link |= false) %>
+    <%= link_to user.email, user_path(user) %>
+  <% else %>
+    <%= user.email %>
+  <% end %>
+</h1>
