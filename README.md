@@ -1,8 +1,15 @@
 # Fakebook App :rocket:
 ### Authors: [David Eli Martinez](https://github.com/davitomix) 👤 & [Alisson Peres](https://github.com/alissonperes) 👤
 
-This project requests you to build a Facebook-like social network application. <br>
-Some of the core features of the platform – users, profiles, “friending”, posts, news feed, and “liking”. <br>
+A Facebook-like web app. :rocket:👨‍💻 <br>
+Some of the core features of the platform: <br>
+:arrow_right: Sign up, log in & log out. <br>
+:arrow_right: User profile. <br>
+:arrow_right: Following feature. <br>
+:arrow_right: Posts. <br>
+:arrow_right: News Feed. <br>
+:arrow_right: Password reset. <br>
+:arrow_right: Account activation. 
 Full task description: <br>
 [*The Odin Project*](https://www.theodinproject.com/courses/ruby-on-rails/lessons/final-project).
 
